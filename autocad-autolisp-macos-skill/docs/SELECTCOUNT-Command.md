@@ -1,0 +1,30 @@
+# SELECTCOUNT (Command)
+
+Finds all objects within the current count that match the properties of the selected objects, and then adds them to the selection
+set.
+
+With SELECTCOUNT, you first select one ore more objects. All objects in the current count that have the same properties are
+automatically added to the selection set.
+
+NOTE: This command is available only during an active count.
+
+#### Related Tasks
+
+* [To Work with Counting Objects](To-Work-with-Counting-Objects.md)
+
+#### Related References
+
+* [Count Visor](Count-Visor.md)
+* [Count Palette](Count-Palette.md)
+
+#### Related Concepts
+
+* [About Counting Objects](About-Counting-Objects.md)
+
+#### Related Information
+
+* [Commands for Counting Objects](Commands-for-Counting-Objects.md)
+
+[Please send us your comment about this page](..)
+
+[![Creative Commons License](../images/ccLink.png)](http://creativecommons.org/licenses/by-nc-sa/3.0/) *Except where otherwise noted, this work is licensed under a [Creative Commons Attribution-NonCommercial-ShareAlike 3.0 Unported License](http://creativecommons.org/licenses/by-nc-sa/3.0/). Please see the [Autodesk Creative Commons FAQ](http://autodesk.com/creativecommons) for more information.*

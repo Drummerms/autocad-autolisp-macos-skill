@@ -1,0 +1,57 @@
+# About the DXF ENTITIES Section
+
+Entities group codes that apply to graphical objects. These codes are found in the ENTITIES section of a DXF™ file and are
+used by AutoLISP ®  and ObjectARX ®  applications in entity definition lists.
+
+#### Related References
+
+* [Common Group Codes for Entities (DXF)](Common-Group-Codes-for-Entities-DXF.md)
+* [3DFACE (DXF)](3DFACE-DXF.md)
+* [3DSOLID (DXF)](3DSOLID-DXF.md)
+* [ACAD\_PROXY\_ENTITY (DXF)](ACAD_PROXY_ENTITY-DXF.md)
+* [ARC (DXF)](ARC-DXF.md)
+* [ATTDEF (DXF)](ATTDEF-DXF.md)
+* [ATTRIB (DXF)](ATTRIB-DXF.md)
+* [BODY (DXF)](BODY-DXF.md)
+* [CIRCLE (DXF)](CIRCLE-DXF.md)
+* [DIMENSION (DXF)](DIMENSION-DXF.md)
+* [ELLIPSE (DXF)](ELLIPSE-DXF.md)
+* [HATCH (DXF)](HATCH-DXF.md)
+* [HELIX (DXF)](HELIX-DXF.md)
+* [IMAGE (DXF)](IMAGE-DXF.md)
+* [INSERT (DXF)](INSERT-DXF.md)
+* [LEADER (DXF)](LEADER-DXF.md)
+* [LIGHT (DXF)](LIGHT-DXF.md)
+* [LINE (DXF)](LINE-DXF.md)
+* [LWPOLYLINE (DXF)](LWPOLYLINE-DXF.md)
+* [MESH (DXF)](MESH-DXF.md)
+* [MLINE (DXF)](MLINE-DXF.md)
+* [MLEADERSTYLE (DXF)](MLEADERSTYLE-DXF.md)
+* [MLEADER (DXF)](MLEADER-DXF.md)
+* [MTEXT (DXF)](MTEXT-DXF.md)
+* [OLEFRAME (DXF)](OLEFRAME-DXF.md)
+* [OLE2FRAME (DXF)](OLE2FRAME-DXF.md)
+* [POINT (DXF)](POINT-DXF.md)
+* [POLYLINE (DXF)](POLYLINE-DXF.md)
+* [RAY (DXF)](RAY-DXF.md)
+* [REGION (DXF)](REGION-DXF.md)
+* [SECTION (DXF)](SECTION-DXF.md)
+* [SEQEND (DXF)](SEQEND-DXF.md)
+* [SHAPE (DXF)](SHAPE-DXF.md)
+* [SOLID (DXF)](SOLID-DXF.md)
+* [SPLINE (DXF)](SPLINE-DXF.md)
+* [SUN (DXF)](SUN-DXF.md)
+* [SURFACE (DXF)](SURFACE-DXF.md)
+* [TABLE (DXF)](TABLE-DXF.md)
+* [TEXT (DXF)](TEXT-DXF.md)
+* [TOLERANCE (DXF)](TOLERANCE-DXF.md)
+* [TRACE (DXF)](TRACE-DXF.md)
+* [UNDERLAY (DXF)](UNDERLAY-DXF.md)
+* [VERTEX (DXF)](VERTEX-DXF.md)
+* [VIEWPORT (DXF)](VIEWPORT-DXF.md)
+* [WIPEOUT (DXF)](WIPEOUT-DXF.md)
+* [XLINE (DXF)](XLINE-DXF.md)
+
+[Please send us your comment about this page](..)
+
+[![Creative Commons License](../images/ccLink.png)](http://creativecommons.org/licenses/by-nc-sa/3.0/) *Except where otherwise noted, this work is licensed under a [Creative Commons Attribution-NonCommercial-ShareAlike 3.0 Unported License](http://creativecommons.org/licenses/by-nc-sa/3.0/). Please see the [Autodesk Creative Commons FAQ](http://autodesk.com/creativecommons) for more information.*

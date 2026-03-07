@@ -12,6 +12,7 @@ Requirements:
 """
 
 import os
+from dotenv import load_dotenv
 import json
 import re
 import argparse
@@ -21,6 +22,8 @@ from tqdm import tqdm
 import kuzu
 import anthropic
 from sentence_transformers import SentenceTransformer
+
+load_dotenv()
 
 # ── Config ────────────────────────────────────────────────────────────────────
 
@@ -64,6 +67,7 @@ Markdown to process:
 def init_db(db_path: str) -> kuzu.Connection:
     db = kuzu.Database(db_path)
     conn = kuzu.Connection(db)
+    conn.execute("INSTALL vector; LOAD vector;")
 
     conn.execute("""
         CREATE NODE TABLE IF NOT EXISTS DocNode (
@@ -118,7 +122,7 @@ def make_node_id(name: str, source_file: str) -> str:
 
 # ── Ingestion ──────────────────────────────────────────────────────────────────
 
-def ingest_docs(docs_dir: str, db_path: str):
+def ingest_docs(docs_dir: str, db_path: str, limit: int = 0):
     print(f"🔧 Initialising database at {db_path}")
     conn = init_db(db_path)
 
@@ -129,6 +133,10 @@ def ingest_docs(docs_dir: str, db_path: str):
 
     md_files = list(Path(docs_dir).rglob("*.md"))
     print(f"📂 Found {len(md_files)} markdown files\n")
+
+    if limit > 0:
+        md_files = md_files[:limit]
+        print(f"   (limited to {limit} files for testing)")
 
     node_registry = {}   # name -> id, for relationship resolution
 
@@ -199,6 +207,15 @@ def ingest_docs(docs_dir: str, db_path: str):
     result = conn.execute("MATCH ()-[r:Relationship]->() RETURN count(r)").get_next()
     print(f"   Relationships: {result[0]}")
 
+    print("📐 Creating vector index...")
+    try:
+        conn.execute("""
+            CALL CREATE_VECTOR_INDEX('DocNode', 'doc_vec_index', 'embedding')
+        """)
+        print("   Vector index created.")
+    except Exception as e:
+        print(f"   ⚠️  Vector index creation failed (may already exist): {e}")
+
 
 # ── Entry Point ────────────────────────────────────────────────────────────────
 
@@ -206,6 +223,7 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Build GraphRAG database from AutoLISP docs")
     parser.add_argument("--docs", default="./docs", help="Path to docs directory")
     parser.add_argument("--db",   default="./autolisp.db", help="Output Kuzu DB path")
+    parser.add_argument("--limit", type=int, default=0, help="Limit number of files to process (0 = all)")
     args = parser.parse_args()
 
-    ingest_docs(args.docs, args.db)
+    ingest_docs(args.docs, args.db, args.limit)

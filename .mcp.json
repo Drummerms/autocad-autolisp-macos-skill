@@ -1,7 +1,7 @@
 {
   "mcpServers": {
     "autolisp_docs": {
-      "command": "python3",
+      "command": ".venv/bin/python3",
       "args": ["mcp_server.py"],
       "env": {
         "AUTOLISP_DB_PATH": "./autolisp.db"

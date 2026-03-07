@@ -1,6 +1,9 @@
 # macOS
 .DS_Store
 
+# Python venv
+.venv/
+
 # GraphRAG
 autolisp.db/
 __pycache__/

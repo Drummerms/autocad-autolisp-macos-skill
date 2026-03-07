@@ -21,7 +21,6 @@ Configure in Claude Code / Claude Desktop:
 """
 
 import os
-import json
 from typing import Optional
 import kuzu
 from sentence_transformers import SentenceTransformer
@@ -34,6 +33,7 @@ DB_PATH = os.environ.get("AUTOLISP_DB_PATH", "./autolisp.db")
 print(f"Loading graph DB from {DB_PATH}...")
 db = kuzu.Database(DB_PATH)
 conn = kuzu.Connection(db)
+conn.execute("INSTALL vector; LOAD vector;")
 
 print("Loading embedding model...")
 embedder = SentenceTransformer("all-MiniLM-L6-v2")
@@ -43,19 +43,15 @@ mcp = FastMCP("autolisp_docs")
 # ── Helpers ────────────────────────────────────────────────────────────────────
 
 def vector_search(query: str, top_k: int = 8) -> list[dict]:
-    """Find semantically similar nodes using cosine similarity."""
+    """Find semantically similar nodes using vector index."""
     query_embedding = embedder.encode(query).tolist()
 
-    # Kuzu supports manual cosine similarity via list_cosine_similarity
     result = conn.execute(f"""
-        MATCH (n:DocNode)
-        WITH n,
-             list_cosine_similarity(n.embedding, $embedding) AS score
-        WHERE score > 0.3
-        RETURN n.id, n.name, n.type, n.summary, n.platform,
-               n.mac_safe, n.syntax, n.source_file, score
-        ORDER BY score DESC
-        LIMIT {top_k}
+        CALL QUERY_VECTOR_INDEX('DocNode', 'doc_vec_index', $embedding, {top_k})
+        WITH node, distance
+        RETURN node.id, node.name, node.type, node.summary, node.platform,
+               node.mac_safe, node.syntax, node.source_file, distance
+        ORDER BY distance ASC
     """, {"embedding": query_embedding})
 
     nodes = []
@@ -80,15 +76,12 @@ def graph_expand(node_ids: list[str], depth: int) -> list[dict]:
     if not node_ids or depth < 1:
         return []
 
-    id_list = json.dumps(node_ids)
-
     result = conn.execute(f"""
-        MATCH (seed:DocNode)
-        WHERE seed.id IN {id_list}
-        CALL bfs(seed, {depth}, 'Relationship') YIELD node AS n
+        MATCH (seed:DocNode)-[:Relationship*1..{depth}]->(n:DocNode)
+        WHERE seed.id IN $seed_ids
         RETURN DISTINCT n.id, n.name, n.type, n.summary,
                         n.platform, n.mac_safe, n.syntax
-    """)
+    """, {"seed_ids": node_ids})
 
     neighbors = []
     while result.has_next():

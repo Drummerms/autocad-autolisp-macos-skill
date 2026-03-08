@@ -5,7 +5,7 @@
 .venv/
 
 # GraphRAG
-autolisp.db/
+autolisp.db
 __pycache__/
 *.pyc
 .env

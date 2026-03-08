@@ -68,7 +68,7 @@ def graph_expand(node_ids: list[str], depth: int) -> list[dict]:
         return []
 
     result = conn.execute(f"""
-        MATCH (seed:DocNode)-[:Relationship*1..{depth}]->(n:DocNode)
+        MATCH (seed:DocNode)-[:Relationship*1..{depth}]-(n:DocNode)
         WHERE seed.id IN $seed_ids
         RETURN DISTINCT n.id, n.name, n.type, n.summary,
                         n.platform, n.mac_safe, n.syntax

@@ -1,6 +1,6 @@
 # GraphRAG v2: 558-Doc Scope — Implementation Plan
 
-> **For Claude:** REQUIRED SUB-SKILL: Use superpowers:executing-plans to implement this plan task-by-task.
+> **Status: COMPLETE** (2026-03-08). All 9 tasks implemented and verified. Full build: 560 docs → 2,828 nodes, 2,261 relationships. MCP server tested end-to-end. Docs removed from repo (maintained in separate docs repo).
 
 **Goal:** Revert all GraphRAG v1 commits, then re-implement GraphRAG scoped to only the 558 AutoLISP function docs that have `*Supported Platforms:*` markers — fixing all 5 Kuzu API bugs from the start.
 

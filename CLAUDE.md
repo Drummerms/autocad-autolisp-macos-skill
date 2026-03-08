@@ -15,7 +15,7 @@ The entry point for the skill is `SKILL.md` (YAML frontmatter + markdown instruc
 - **`mcp_server.py`** — FastMCP server exposing `autolisp_docs.search(query, depth, filter)`. Performs vector similarity search over node embeddings, then expands results via graph traversal. Served to Claude via MCP protocol.
 - **`.mcp.json`** — MCP server configuration for Claude Code auto-discovery. Points to `mcp_server.py` with `AUTOLISP_DB_PATH` env var.
 - **`requirements.txt`** — Python dependencies: kuzu, anthropic, sentence-transformers, mcp, tqdm, python-dotenv.
-- **`docs/`** — 4,500+ markdown files scraped from official Autodesk AutoCAD help. Each file covers one command, system variable, function, or dialog. ~560 of these are function reference docs with `*Supported Platforms:*` markers used by the GraphRAG pipeline.
+- **`docs/plans/`** — Design documents and implementation plans.
 - **`scripts/`** — Python 3 CLI tools (no dependencies beyond stdlib):
   - `validate_lisp.py` — Scans `.lsp` files for Windows-only patterns and reports errors/warnings with Mac-safe alternatives.
   - `compatibility_checker.py` — Offline database + doc-backed lookup for individual function compatibility.
@@ -52,10 +52,11 @@ python3 scripts/compatibility_checker.py --list-compatible
 
 ```bash
 # Build the knowledge graph (one-time, requires ANTHROPIC_API_KEY)
-python build_graph.py --docs ./docs --db ./autolisp.db
+# Docs are maintained in a separate repo; provide the path
+python build_graph.py --docs /path/to/autocad-docs --db ./autolisp.db
 
 # Build with limit for testing
-python build_graph.py --docs ./docs --db ./autolisp.db --limit 10
+python build_graph.py --docs /path/to/autocad-docs --db ./autolisp.db --limit 10
 
 # Test the MCP server locally
 AUTOLISP_DB_PATH=./autolisp.db python mcp_server.py
@@ -64,7 +65,7 @@ AUTOLISP_DB_PATH=./autolisp.db python mcp_server.py
 pip install -r requirements.txt
 ```
 
-The MCP server is auto-discovered by Claude Code via `.mcp.json`. The generated `autolisp.db/` directory is gitignored — each user builds locally.
+The MCP server is auto-discovered by Claude Code via `.mcp.json`. The pre-built `autolisp.db` database is included in the repo.
 
 ## Key Mac Compatibility Rules
 
@@ -79,16 +80,15 @@ When writing or modifying AutoLISP code in this project, these patterns are **Wi
 
 DCL dialogs (`load_dialog`, `new_dialog`) work on AutoCAD Mac but **not** AutoCAD LT Mac.
 
-## Doc File Lookup Convention
+## Function Lookup Convention
 
-To verify a function's platform support, search `docs/` using the naming pattern:
+To verify a function's platform support, use the GraphRAG MCP `search` tool:
 ```
-docs/{function-name}-AutoLISP.md
-docs/{function-name}-AutoLISP-ActiveX.md
-docs/{function-name}-AutoLISP-DCL.md
-docs/{function-name}-AutoLISP-Express-Tools.md
+search(query="function-name", filter="mac")     # Mac-safe results only
+search(query="function-name", depth=2)           # Include related functions
+search(query="function-name", filter="windows_only")  # Windows-only results
 ```
-Look for the `*Supported Platforms:*` line in the matched file.
+The knowledge graph contains ~560 function reference docs with platform compatibility data.
 
 ## LSP Code Conventions
 

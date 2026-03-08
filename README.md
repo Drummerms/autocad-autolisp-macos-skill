@@ -1,11 +1,11 @@
 # AutoCAD AutoLISP Mac Compatibility Skill
 
-A comprehensive skill for creating AutoLISP scripts compatible with AutoCAD for Mac. Includes 4,500+ official AutoCAD documentation files for platform compatibility verification.
+A comprehensive skill for creating AutoLISP scripts compatible with AutoCAD for Mac. Includes a GraphRAG knowledge graph built from ~560 official AutoLISP function reference docs for platform compatibility verification via semantic search.
 
 ## Features
 
 - **Platform Compatibility Checking**: Validates AutoLISP code against Mac compatibility
-- **4,500+ Documentation Files**: Official AutoCAD docs for reference
+- **GraphRAG Knowledge Graph**: Semantic search over ~560 AutoLISP function docs via MCP
 - **Validation Scripts**: Python tools to check your AutoLISP files
 - **LSP Templates**: Ready-to-use templates for common tasks
 - **Cross-Platform Support**: Works with Claude Code, Cursor, GitHub Copilot, and more
@@ -94,7 +94,7 @@ python3 scripts/compatibility_checker.py --list-compatible
 ```
 autocad-autolisp-macos/
 ├── SKILL.md              # Main skill file
-├── docs/                 # 4,500+ AutoCAD documentation files
+├── docs/plans/           # Design documents and implementation plans
 ├── scripts/
 │   ├── validate_lisp.py          # AutoLISP validator
 │   └── compatibility_checker.py  # Function compatibility checker
@@ -121,10 +121,13 @@ autocad-autolisp-macos/
 
 The GraphRAG MCP server provides semantic search over ~560 AutoLISP function reference docs. It requires a one-time build step.
 
+The documentation source files are maintained in a separate repository. You need to provide the path to the docs directory when building.
+
 ### Prerequisites
 
 - Python 3.12 (Kuzu requires pre-built wheels not available on 3.14)
 - An Anthropic API key (for Claude Haiku extraction, ~$1.73 for full build)
+- AutoCAD documentation markdown files (from the companion docs repo)
 
 ### Build
 
@@ -140,13 +143,13 @@ pip install -r requirements.txt
 echo "ANTHROPIC_API_KEY=your-key" > .env
 
 # Build the knowledge graph (~26 minutes)
-python build_graph.py --docs ./docs --db ./autolisp.db
+python build_graph.py --docs /path/to/autocad-docs --db ./autolisp.db
 
 # Test with a small subset first
-python build_graph.py --docs ./docs --db ./autolisp.db --limit 10
+python build_graph.py --docs /path/to/autocad-docs --db ./autolisp.db --limit 10
 ```
 
-The MCP server is auto-discovered by Claude Code via `.mcp.json`. The `autolisp.db/` database is gitignored — each user builds locally.
+The MCP server is auto-discovered by Claude Code via `.mcp.json`. The pre-built `autolisp.db` database is included in the repo (23MB), so the MCP server works out of the box without running the build step.
 
 ## Mac Compatibility Overview
 

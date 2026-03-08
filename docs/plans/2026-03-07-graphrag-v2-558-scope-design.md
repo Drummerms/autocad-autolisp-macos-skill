@@ -1,5 +1,7 @@
 # GraphRAG v2: 558-Doc Scope — Design Document
 
+> **Status: COMPLETE** (2026-03-08). Implementation delivered per this design.
+
 ## Problem
 
 GraphRAG v1 attempted to ingest all 4,516 docs via sequential Haiku API calls. This took ~30 hours and cost ~$14, making it impractical. Only 558 of 4,516 docs are AutoLISP function references with platform compatibility data — the rest are Commands, System Variables, and conceptual docs that don't contain the structured function metadata the GraphRAG pipeline extracts.

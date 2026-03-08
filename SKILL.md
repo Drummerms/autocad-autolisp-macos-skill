@@ -1,16 +1,16 @@
 ---
 name: autocad-autolisp-macos
 description: >-
-  Create AutoLISP scripts compatible with AutoCAD for Mac. Automatically checks
-  function compatibility against 4,500+ official AutoCAD documentation files.
-  Validates against ActiveX (vlax-*), Express Tools (acet-*), COM, and other
-  Windows-only features. Provides Mac-safe alternatives and cross-platform
-  code patterns for AutoCAD development on macOS.
+  Create AutoLISP scripts compatible with AutoCAD for Mac. Uses a GraphRAG
+  knowledge graph (built from ~560 official AutoLISP function reference docs)
+  to check function compatibility. Validates against ActiveX (vlax-*), Express
+  Tools (acet-*), COM, and other Windows-only features. Provides Mac-safe
+  alternatives and cross-platform code patterns for AutoCAD development on macOS.
 license: MIT
 metadata:
   author: Michael Sablatura
   version: 3.0.0
-  documentation_files: 4510
+  graphrag_functions: 560
   platforms:
     - Claude Code
     - GitHub Copilot
@@ -32,7 +32,7 @@ Invoke this skill when:
 ## Quick Start
 
 1. **Identify functions** you plan to use
-2. **Verify compatibility** using the docs in `docs/` directory
+2. **Verify compatibility** using the GraphRAG MCP search tool
 3. **Use alternatives** for Windows-only features
 4. **Test on Mac** before deployment
 
@@ -81,13 +81,11 @@ acad_truecolordlg Windows-only dialog
 ## Before Writing Any AutoLISP Code
 
 1. **List all functions** you plan to use
-2. **Check each function** in `docs/` directory:
-   ```bash
-   grep -l "function-name-AutoLISP" docs/*.md
-   ```
-3. **Verify platform support** - look for `*Supported Platforms:*` line
-4. **Replace incompatible functions** with Mac-safe alternatives
-5. **Document any limitations** in the code header
+2. **Search the GraphRAG knowledge graph** using the MCP `search` tool:
+   - `search(query="function-name", filter="mac")` for Mac-safe results
+   - `search(query="function-name", depth=2)` to see related functions
+3. **Replace incompatible functions** with Mac-safe alternatives
+4. **Document any limitations** in the code header
 
 ## Code Template
 
@@ -170,6 +168,6 @@ Setup: See README.md for GraphRAG build instructions.
 - [ ] No `acet-*` Express Tools functions
 - [ ] No `vl-load-com` or COM functions
 - [ ] No Windows-only dialogs (`acad_colordlg`, etc.)
-- [ ] All functions verified in `docs/` documentation
+- [ ] All functions verified via GraphRAG MCP search
 - [ ] Compatibility header included
 - [ ] Tested on Mac (or documented limitations)

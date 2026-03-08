@@ -381,6 +381,14 @@ COMPATIBILITY_DB: Dict[str, FunctionCompatibility] = {
         alternative="(getint \"\\nEnter color number: \")",
         category="Dialogs"
     ),
+    "acad_helpdlg": FunctionCompatibility(
+        name="acad_helpdlg",
+        compatibility=Compatibility.WINDOWS_ONLY,
+        platforms="Windows only",
+        notes="Windows-only help dialog",
+        alternative="Use (help) function or external documentation",
+        category="Dialogs"
+    ),
     "load_dialog": FunctionCompatibility(
         name="load_dialog",
         compatibility=Compatibility.PARTIAL,

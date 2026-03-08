@@ -195,7 +195,7 @@ AUTOLISP_DB_PATH=./autolisp.db python mcp_server.py
 | Reactors | `vlr-*` | Use polling or command wrappers |
 | Express Tools | `acet-*` | Implement with standard AutoLISP |
 | Registry | `vl-registry-*` | Use config files |
-| Dialogs | `acad_colordlg` | Use `getint` |
+| Dialogs | `acad_colordlg`, `acad_helpdlg` | Use `getint` / `(help)` |
 
 ## Example: Mac-Compatible AutoLISP
 

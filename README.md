@@ -1,5 +1,7 @@
 # AutoCAD AutoLISP Mac Compatibility Skill
 
+**v3.0.0** | [Skill Definition](SKILL.md)
+
 A comprehensive skill for creating AutoLISP scripts compatible with AutoCAD for Mac. Includes a GraphRAG knowledge graph built from ~560 official AutoLISP function reference docs for platform compatibility verification via semantic search.
 
 ## Features
@@ -74,6 +76,15 @@ python3 scripts/validate_lisp.py ./my-scripts/
 
 # Check a specific function
 python3 scripts/validate_lisp.py --check-function vlax-get
+
+# Verbose output with detailed results
+python3 scripts/validate_lisp.py -v your-script.lsp
+
+# JSON output for programmatic use
+python3 scripts/validate_lisp.py --json your-script.lsp
+
+# Specify a custom docs path for doc-backed lookups
+python3 scripts/validate_lisp.py --docs-path /path/to/docs your-script.lsp
 ```
 
 #### Check Function Compatibility
@@ -87,6 +98,9 @@ python3 scripts/compatibility_checker.py --list-incompatible
 
 # List all known Mac-compatible functions
 python3 scripts/compatibility_checker.py --list-compatible
+
+# Specify a custom docs path for doc-backed lookups
+python3 scripts/compatibility_checker.py --docs-path /path/to/docs command
 ```
 
 ## What's Included
@@ -121,7 +135,7 @@ autocad-autolisp-macos/
 
 The GraphRAG MCP server provides semantic search over ~560 AutoLISP function reference docs. It requires a one-time build step.
 
-The documentation source files are maintained in a separate repository. You need to provide the path to the docs directory when building.
+The documentation source files are maintained in a separate repository: [autocad-htm-to-markdown-converter](https://github.com/Drummerms/autocad-htm-to-markdown-converter.git). Clone that repo and provide the path to its output directory when building.
 
 ### Prerequisites
 
@@ -150,6 +164,14 @@ python build_graph.py --docs /path/to/autocad-docs --db ./autolisp.db --limit 10
 ```
 
 The MCP server is auto-discovered by Claude Code via `.mcp.json`. The pre-built `autolisp.db` database is included in the repo (23MB), so the MCP server works out of the box without running the build step.
+
+### Test MCP Server Locally
+
+```bash
+# Activate the venv and run the server
+source .venv/bin/activate
+AUTOLISP_DB_PATH=./autolisp.db python mcp_server.py
+```
 
 ## Mac Compatibility Overview
 

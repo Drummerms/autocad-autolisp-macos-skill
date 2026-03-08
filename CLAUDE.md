@@ -44,6 +44,14 @@ python3 scripts/compatibility_checker.py --list-incompatible
 # List all known Mac-compatible functions
 python3 scripts/compatibility_checker.py --list-compatible
 
+# Additional flags for validate_lisp.py:
+#   -v, --verbose     Detailed output
+#   --json            JSON output for programmatic use
+#   --docs-path PATH  Custom docs directory for doc-backed lookups
+
+# Additional flags for compatibility_checker.py:
+#   --docs-path PATH  Custom docs directory for doc-backed lookups
+
 # Install the skill for a specific platform
 ./install.sh --platform claude
 ```
@@ -51,8 +59,14 @@ python3 scripts/compatibility_checker.py --list-compatible
 ### GraphRAG Commands
 
 ```bash
+# Set up Python 3.12 venv (Kuzu requires <=3.13)
+python3.12 -m venv .venv
+source .venv/bin/activate
+pip install -r requirements.txt
+
 # Build the knowledge graph (one-time, requires ANTHROPIC_API_KEY)
-# Docs are maintained in a separate repo; provide the path
+# Docs repo: https://github.com/Drummerms/autocad-htm-to-markdown-converter.git
+# Full build: ~26 minutes, ~$1.73 USD (Claude Haiku extraction)
 python build_graph.py --docs /path/to/autocad-docs --db ./autolisp.db
 
 # Build with limit for testing
@@ -60,9 +74,6 @@ python build_graph.py --docs /path/to/autocad-docs --db ./autolisp.db --limit 10
 
 # Test the MCP server locally
 AUTOLISP_DB_PATH=./autolisp.db python mcp_server.py
-
-# Install Python dependencies
-pip install -r requirements.txt
 ```
 
 The MCP server is auto-discovered by Claude Code via `.mcp.json`. The pre-built `autolisp.db` database is included in the repo.
@@ -76,7 +87,7 @@ When writing or modifying AutoLISP code in this project, these patterns are **Wi
 - `vl-load-com` (COM loading) — remove entirely
 - `vl-vbaload` (VBA) — rewrite in pure AutoLISP
 - `vl-registry-*` (Windows Registry) — use config files
-- `acad_colordlg`, `acad_truecolordlg` — use `getint` for color input
+- `acad_colordlg`, `acad_truecolordlg`, `acad_helpdlg` — use `getint` for color input
 
 DCL dialogs (`load_dialog`, `new_dialog`) work on AutoCAD Mac but **not** AutoCAD LT Mac.
 
@@ -95,9 +106,15 @@ The knowledge graph contains ~560 function reference docs with platform compatib
 All AutoLISP code in this repo follows a standard header format:
 ```lisp
 ;;; FILENAME.LSP
-;;; Description
+;;; Brief description
 ;;; Compatibility: AutoCAD for Windows and Mac
-;;; Author: Name
-;;; Version: X.Y.Z
+;;;
+;;; Description: Full description of what this command does
+;;; Author: Your Name
+;;; Version: 1.0.0
+;;;
+;;; Usage:
+;;;   Load: (load "filename.lsp")
+;;;   Run: COMMANDNAME
 ```
 Commands are defined with `(defun c:COMMANDNAME (/ local-vars) ...)` and files end with `(princ)` for clean loading.

@@ -26,19 +26,19 @@ The installer will auto-detect your platform and install accordingly.
 
 ```bash
 # Clone or copy to your skills directory
-git clone https://github.com/yourusername/autocad-autolisp-macos.git ~/.claude/skills/autocad-autolisp-macos
+git clone https://github.com/Drummerms/autocad-autolisp-macos-skill.git ~/.claude/skills/autocad-autolisp-macos
 ```
 
 #### Cursor
 
 ```bash
-git clone https://github.com/yourusername/autocad-autolisp-macos.git .cursor/rules/autocad-autolisp-macos
+git clone https://github.com/Drummerms/autocad-autolisp-macos-skill.git .cursor/rules/autocad-autolisp-macos
 ```
 
 #### GitHub Copilot
 
 ```bash
-git clone https://github.com/yourusername/autocad-autolisp-macos.git .github/skills/autocad-autolisp-macos
+git clone https://github.com/Drummerms/autocad-autolisp-macos-skill.git .github/skills/autocad-autolisp-macos
 ```
 
 ## Usage

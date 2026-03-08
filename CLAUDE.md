@@ -87,7 +87,8 @@ When writing or modifying AutoLISP code in this project, these patterns are **Wi
 - `vl-load-com` (COM loading) — remove entirely
 - `vl-vbaload` (VBA) — rewrite in pure AutoLISP
 - `vl-registry-*` (Windows Registry) — use config files
-- `acad_colordlg`, `acad_truecolordlg`, `acad_helpdlg` — use `getint` for color input
+- `acad_colordlg`, `acad_truecolordlg` — use `getint` for color input
+- `acad_helpdlg` — Windows-only help dialog
 
 DCL dialogs (`load_dialog`, `new_dialog`) work on AutoCAD Mac but **not** AutoCAD LT Mac.
 

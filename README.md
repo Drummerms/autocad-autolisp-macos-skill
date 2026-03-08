@@ -1,6 +1,6 @@
 # AutoCAD AutoLISP Mac Compatibility Skill
 
-A comprehensive skill for creating AutoLISP scripts compatible with AutoCAD for Mac. Includes a GraphRAG MCP server backed by 4,500+ official AutoCAD documentation files for semantic search with platform compatibility verification.
+A comprehensive skill for creating AutoLISP scripts compatible with AutoCAD for Mac. Includes 4,500+ official AutoCAD documentation files for platform compatibility verification.
 
 ## Features
 
@@ -89,64 +89,15 @@ python3 scripts/compatibility_checker.py --list-incompatible
 python3 scripts/compatibility_checker.py --list-compatible
 ```
 
-## GraphRAG Setup
-
-The skill includes a GraphRAG MCP server that provides semantic search over the documentation via a Kuzu graph database.
-
-### 1. Install Python dependencies
-
-```bash
-pip install -r requirements.txt
-```
-
-### 2. Build the knowledge graph
-
-Requires `ANTHROPIC_API_KEY` set in your environment. This is a one-time operation (~2-4 hours, ~$2-5 USD at Haiku rates):
-
-```bash
-export ANTHROPIC_API_KEY=sk-ant-...
-python build_graph.py --docs ./docs --db ./autolisp.db
-```
-
-### 3. Wire up the MCP server
-
-The repo includes `.mcp.json` for Claude Code auto-discovery. For other tools, add to your MCP config:
-
-```json
-{
-  "mcpServers": {
-    "autolisp_docs": {
-      "command": "python3",
-      "args": ["/absolute/path/to/mcp_server.py"],
-      "env": {
-        "AUTOLISP_DB_PATH": "/absolute/path/to/autolisp.db"
-      }
-    }
-  }
-}
-```
-
-### Rebuilding after doc updates
-
-Re-run ingestion — it uses `MERGE` so existing nodes are updated, not duplicated:
-
-```bash
-python build_graph.py --docs ./docs --db ./autolisp.db
-```
-
 ## What's Included
 
 ```
 autocad-autolisp-macos/
-├── SKILL.md              # Main skill file (v3 - GraphRAG)
-├── build_graph.py        # One-time: docs → Kuzu graph DB
-├── mcp_server.py         # MCP server for Claude integration
-├── requirements.txt      # Python dependencies
-├── .mcp.json             # MCP auto-discovery config
+├── SKILL.md              # Main skill file
 ├── docs/                 # 4,500+ AutoCAD documentation files
 ├── scripts/
-│   ├── validate_lisp.py          # AutoLISP validator (offline)
-│   └── compatibility_checker.py  # Function compatibility checker (offline)
+│   ├── validate_lisp.py          # AutoLISP validator
+│   └── compatibility_checker.py  # Function compatibility checker
 ├── references/
 │   ├── function-compatibility.md # Complete compatibility tables
 │   ├── dxf-codes.md              # DXF code reference

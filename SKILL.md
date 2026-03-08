@@ -2,14 +2,14 @@
 name: autocad-autolisp-macos
 description: >-
   Create AutoLISP scripts compatible with AutoCAD for Mac. Automatically checks
-  function compatibility against 4,500+ official AutoCAD documentation files via
-  GraphRAG knowledge graph. Validates against ActiveX (vlax-*), Express Tools
-  (acet-*), COM, and other Windows-only features. Provides Mac-safe alternatives
-  and cross-platform code patterns for AutoCAD development on macOS.
+  function compatibility against 4,500+ official AutoCAD documentation files.
+  Validates against ActiveX (vlax-*), Express Tools (acet-*), COM, and other
+  Windows-only features. Provides Mac-safe alternatives and cross-platform
+  code patterns for AutoCAD development on macOS.
 license: MIT
 metadata:
   author: Michael Sablatura
-  version: 3.0.0
+  version: 2.0.0
   documentation_files: 4510
   platforms:
     - Claude Code
@@ -17,7 +17,6 @@ metadata:
     - Cursor
     - Windsurf
     - Cline
-  retrieval: graphrag-mcp
 ---
 
 ## When to Use This Skill
@@ -29,49 +28,12 @@ Invoke this skill when:
 - User asks about AutoLISP functions and their Mac support
 - User needs to validate existing AutoLISP for Mac compatibility
 
----
+## Quick Start
 
-## Knowledge Retrieval via GraphRAG
-
-You have access to a GraphRAG MCP tool: **`autolisp_docs`**
-
-This tool queries a knowledge graph built from 4,500+ official AutoCAD documentation
-files. Unlike simple search, it traverses relationships between functions, commands,
-parameters, and platform constraints — surfacing related context you wouldn't find
-with keyword matching alone.
-
-### ALWAYS call `autolisp_docs.search` before:
-- Writing any AutoLISP function you are not 100% certain is Mac-safe
-- Answering questions about platform support
-- Suggesting alternatives to Windows-only features
-- Validating any function against Mac compatibility
-
-### Tool Usage
-
-```
-autolisp_docs.search(
-  query   = "<function name, concept, or question>",
-  depth   = 2,          # 1=direct match, 2=related context (default), 3=broad exploration
-  filter  = "mac"       # optional: "mac", "windows", "both" — filters by platform tag
-)
-```
-
-### Retrieval Examples
-
-| Task | Tool Call |
-|------|-----------|
-| Check if `vlax-get` works on Mac | `search(query="vlax-get platform support", filter="mac")` |
-| Find Mac-safe alternatives to reactors | `search(query="vlr reactor alternatives mac", depth=2)` |
-| Understand entmod DXF code usage | `search(query="entmod DXF codes layer color", depth=2)` |
-| Validate a full function list | Call `search` once per function group |
-
-### Graph Depth Guide
-
-- **depth=1** → Direct documentation match only. Use for quick platform lookups.
-- **depth=2** → Match + related functions, parameters, and see-also links. *Recommended default.*
-- **depth=3** → Broad graph traversal. Use for "how does X relate to Y?" or architectural questions.
-
----
+1. **Identify functions** you plan to use
+2. **Verify compatibility** using the docs in `docs/` directory
+3. **Use alternatives** for Windows-only features
+4. **Test on Mac** before deployment
 
 ## Platform Compatibility at a Glance
 
@@ -91,11 +53,9 @@ autolisp_docs.search(
 
 *DCL supported on AutoCAD for Mac, but NOT on AutoCAD LT for Mac
 
----
-
 ## Critical Mac Incompatibilities
 
-**NEVER use these — they will fail on Mac:**
+**NEVER use these - they will fail on Mac:**
 
 ```
 vlax-*          ActiveX/COM - no Mac support
@@ -107,10 +67,6 @@ acad_colordlg   Windows-only dialog
 acad_truecolordlg Windows-only dialog
 ```
 
-> When in doubt, call `autolisp_docs.search(query="<function> mac support")` to verify.
-
----
-
 ## Mac-Safe Alternatives
 
 | Windows Feature | Mac Alternative |
@@ -121,20 +77,16 @@ acad_truecolordlg Windows-only dialog
 | Registry functions | Use external config files (JSON/LSP) |
 | `vlr-*` reactors | Polling with timers or command wrappers |
 
----
-
 ## Before Writing Any AutoLISP Code
 
 1. **List all functions** you plan to use
-2. **Query the knowledge graph** for each function or function group:
+2. **Check each function** in `docs/` directory:
+   ```bash
+   grep -l "function-name-AutoLISP" docs/*.md
    ```
-   autolisp_docs.search(query="entmake entmod layer DXF mac", depth=2)
-   ```
-3. **Verify platform support** — look for `platform: mac` or `platform: windows_only` in results
-4. **Replace incompatible functions** with Mac-safe alternatives from the graph results
+3. **Verify platform support** - look for `*Supported Platforms:*` line
+4. **Replace incompatible functions** with Mac-safe alternatives
 5. **Document any limitations** in the code header
-
----
 
 ## Code Template
 
@@ -155,7 +107,26 @@ acad_truecolordlg Windows-only dialog
 (princ)
 ```
 
----
+## Validation Scripts
+
+This skill includes validation tools in `scripts/`:
+
+- `validate_lisp.py` - Validates AutoLISP files for Mac compatibility
+- `compatibility_checker.py` - Checks individual function compatibility
+
+```bash
+python3 scripts/validate_lisp.py your-script.lsp
+```
+
+## Documentation Index
+
+| Reference | Description |
+|-----------|-------------|
+| `references/function-compatibility.md` | Complete function compatibility tables |
+| `references/dxf-codes.md` | DXF code reference for `entmake`/`entmod` |
+| `references/mac-alternatives.md` | Detailed Mac-safe alternatives |
+| `references/dcl-mac-limitations.md` | DCL support on Mac |
+| `assets/templates/` | Ready-to-use LSP templates |
 
 ## Example: Mac-Compatible Script
 
@@ -181,14 +152,12 @@ acad_truecolordlg Windows-only dialog
 )
 ```
 
----
-
 ## Pre-Commit Checklist
 
-- [ ] `autolisp_docs.search` called for all non-trivial functions used
 - [ ] No `vlax-*` or `vlr-*` functions used
 - [ ] No `acet-*` Express Tools functions
 - [ ] No `vl-load-com` or COM functions
 - [ ] No Windows-only dialogs (`acad_colordlg`, etc.)
+- [ ] All functions verified in `docs/` documentation
 - [ ] Compatibility header included
 - [ ] Tested on Mac (or documented limitations)

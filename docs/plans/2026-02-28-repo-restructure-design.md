@@ -1,5 +1,7 @@
 # Design: Repo Restructure to `autocad-autolisp-macos-skill`
 
+> **Status: COMPLETE** (2026-02-28). Implementation delivered per this design.
+
 **Date:** 2026-02-28
 
 ## Overview

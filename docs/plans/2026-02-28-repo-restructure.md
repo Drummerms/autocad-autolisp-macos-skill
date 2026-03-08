@@ -1,6 +1,6 @@
 # Repo Restructure Implementation Plan
 
-> **For Claude:** REQUIRED SUB-SKILL: Use superpowers:executing-plans to implement this plan task-by-task.
+> **Status: COMPLETE** (2026-02-28). Repo renamed to `autocad-autolisp-macos-skill` and pushed to GitHub.
 
 **Goal:** Rename repo to `autocad-autolisp-macos-skill`, move all content into a subfolder, and push to a new GitHub repository.
 

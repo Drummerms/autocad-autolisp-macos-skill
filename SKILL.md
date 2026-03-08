@@ -1,5 +1,5 @@
 ---
-name: autocad-autolisp-macos
+name: autocad-autolisp-macos-skill
 description: >-
   Create AutoLISP scripts compatible with AutoCAD for Mac. Uses a GraphRAG
   knowledge graph (built from ~560 official AutoLISP function reference docs)

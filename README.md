@@ -109,8 +109,44 @@ autocad-autolisp-macos/
 │   ├── batch-plot.lsp            # Batch plotting
 │   └── entity-creator.lsp        # Entity creation with entmake
 ├── install.sh            # Cross-platform installer
+├── build_graph.py        # GraphRAG ingestion (558 function docs)
+├── mcp_server.py         # MCP server for semantic search
+├── requirements.txt      # Python dependencies
+├── .mcp.json             # MCP auto-discovery config
+├── CLAUDE.md             # Claude Code project instructions
 └── README.md             # This file
 ```
+
+## GraphRAG Setup (Optional)
+
+The GraphRAG MCP server provides semantic search over ~560 AutoLISP function reference docs. It requires a one-time build step.
+
+### Prerequisites
+
+- Python 3.12 (Kuzu requires pre-built wheels not available on 3.14)
+- An Anthropic API key (for Claude Haiku extraction, ~$1.73 for full build)
+
+### Build
+
+```bash
+# Create Python 3.12 venv
+python3.12 -m venv .venv
+source .venv/bin/activate
+
+# Install dependencies
+pip install -r requirements.txt
+
+# Set your API key
+echo "ANTHROPIC_API_KEY=your-key" > .env
+
+# Build the knowledge graph (~26 minutes)
+python build_graph.py --docs ./docs --db ./autolisp.db
+
+# Test with a small subset first
+python build_graph.py --docs ./docs --db ./autolisp.db --limit 10
+```
+
+The MCP server is auto-discovered by Claude Code via `.mcp.json`. The `autolisp.db/` database is gitignored — each user builds locally.
 
 ## Mac Compatibility Overview
 

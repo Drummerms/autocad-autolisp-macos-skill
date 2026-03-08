@@ -9,7 +9,7 @@ description: >-
 license: MIT
 metadata:
   author: Michael Sablatura
-  version: 2.0.0
+  version: 3.0.0
   documentation_files: 4510
   platforms:
     - Claude Code
@@ -17,6 +17,7 @@ metadata:
     - Cursor
     - Windsurf
     - Cline
+  mcp_server: mcp_server.py
 ---
 
 ## When to Use This Skill
@@ -117,6 +118,17 @@ This skill includes validation tools in `scripts/`:
 ```bash
 python3 scripts/validate_lisp.py your-script.lsp
 ```
+
+## GraphRAG MCP Search
+
+This skill includes a GraphRAG-powered MCP server that provides semantic search over ~560 AutoLISP function reference docs. When the MCP server is running, Claude Code can search the knowledge graph directly.
+
+The MCP server exposes a `search(query, depth, filter)` tool:
+- `query`: Function name, concept, or natural language question
+- `depth`: 1 (direct matches), 2 (+ related), 3 (broad exploration)
+- `filter`: "mac" (Mac-safe only), "windows_only", or "both" (default)
+
+Setup: See README.md for GraphRAG build instructions.
 
 ## Documentation Index
 

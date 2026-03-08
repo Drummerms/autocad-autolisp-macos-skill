@@ -66,6 +66,7 @@ vl-load-com     COM loading - not available on Mac
 vl-vbaload      VBA - not available on Mac
 acad_colordlg   Windows-only dialog
 acad_truecolordlg Windows-only dialog
+acad_helpdlg    Windows-only help dialog
 ```
 
 ## Mac-Safe Alternatives
@@ -110,11 +111,36 @@ acad_truecolordlg Windows-only dialog
 
 This skill includes validation tools in `scripts/`:
 
-- `validate_lisp.py` - Validates AutoLISP files for Mac compatibility
-- `compatibility_checker.py` - Checks individual function compatibility
+### validate_lisp.py — File/Directory Validation
 
 ```bash
+# Validate a single file
 python3 scripts/validate_lisp.py your-script.lsp
+
+# Validate all .lsp files in a directory (recursive)
+python3 scripts/validate_lisp.py ./my-scripts/
+
+# Check a specific function
+python3 scripts/validate_lisp.py --check-function vlax-get
+
+# Verbose output
+python3 scripts/validate_lisp.py -v your-script.lsp
+
+# JSON output for programmatic use
+python3 scripts/validate_lisp.py --json your-script.lsp
+```
+
+### compatibility_checker.py — Function Lookup
+
+```bash
+# Look up a function
+python3 scripts/compatibility_checker.py command
+
+# List all known Mac-incompatible functions
+python3 scripts/compatibility_checker.py --list-incompatible
+
+# List all known Mac-compatible functions
+python3 scripts/compatibility_checker.py --list-compatible
 ```
 
 ## GraphRAG MCP Search
@@ -127,6 +153,8 @@ The MCP server exposes a `search(query, depth, filter)` tool:
 - `filter`: "mac" (Mac-safe only), "windows_only", or "both" (default)
 
 Setup: See README.md for GraphRAG build instructions.
+
+To test the MCP server locally: `AUTOLISP_DB_PATH=./autolisp.db python mcp_server.py`
 
 ## Documentation Index
 

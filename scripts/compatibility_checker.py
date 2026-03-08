@@ -8,7 +8,7 @@ Can search the included documentation or provide offline lookups for known funct
 Usage:
     python3 compatibility_checker.py <function_name>
     python3 compatibility_checker.py --list-incompatible
-    python3 compatibility_checker.py --list-safe
+    python3 compatibility_checker.py --list-compatible
 """
 
 import os
@@ -412,6 +412,16 @@ COMPATIBILITY_DB: Dict[str, FunctionCompatibility] = {
         notes="Windows Registry not available on Mac",
         alternative="Use external config files (JSON, LSP, or INI)",
         category="Registry"
+    ),
+
+    # === VBA - Windows Only ===
+    "vl-vbaload": FunctionCompatibility(
+        name="vl-vbaload",
+        compatibility=Compatibility.WINDOWS_ONLY,
+        platforms="Windows only; not available on Mac OS or Web",
+        notes="VBA not available on Mac",
+        alternative="Rewrite functionality in pure AutoLISP",
+        category="VBA"
     ),
 }
 

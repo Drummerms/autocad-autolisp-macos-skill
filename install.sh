@@ -183,7 +183,7 @@ main() {
     echo ""
     print_msg "$BLUE" "The skill includes:"
     print_msg "$BLUE" "  - SKILL.md (main skill file)"
-    print_msg "$BLUE" "  - docs/ (4,500+ AutoCAD documentation files)"
+    print_msg "$BLUE" "  - autolisp.db (pre-built GraphRAG knowledge graph)"
     print_msg "$BLUE" "  - scripts/ (validation tools)"
     print_msg "$BLUE" "  - references/ (detailed documentation)"
     print_msg "$BLUE" "  - assets/templates/ (LSP templates)"
